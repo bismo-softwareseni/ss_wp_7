@@ -14,14 +14,17 @@
      **/
     class SS_WP_7_Main {
         function __construct() {
-            //-- add new user roles
-            register_activation_hook( __FILE__, array( $his, 'ssWp7CreateUserRole' ) );
-
             /**
              * execute this when plugin activated and have been loaded
              * 1. register shortcode
              **/
-            add_action( 'plugins_loaded', array( $this, 'ssWp7PluginsLoadedHandlers' ) );
+            add_action( 'plugins_loaded', array( $this, 'ssWp7PluginsLoadedHandlers' ), 2 );
+
+            //-- add new user roles
+            register_activation_hook( __FILE__, array( $this, 'ssWp7CreateUserRole' ) );
+
+            //-- remove user role on deactivation
+            register_deactivation_hook( __FILE__, array( $this, 'ssWp7RemoveUserRole' ) );
         }
 
         //-- function to create shortcode for displaying all staff and manager
@@ -61,6 +64,19 @@
                 )
             );
         }
+
+        //-- function to remove role on deactivation
+        function ssWp7RemoveUserRole() {
+            //-- remove staff
+            if( get_role( 'ss_staff' ) ){
+                remove_role( 'ss_staff' );
+            }
+
+            //-- remove manager
+            if( get_role( 'ss_manager' ) ){
+                remove_role( 'ss_manager' );
+            }
+        }   
 
         //-- function for executing some task when plugins loaded
         function ssWp7PluginsLoadedHandlers() {
