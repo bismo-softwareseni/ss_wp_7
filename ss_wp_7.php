@@ -13,6 +13,8 @@
      * --------------------------------------------------------------------------
      **/
     class SS_WP_7_Main {
+        var $ss_max_user_per_page = 5;
+
         function __construct() {
             /**
              * execute this when plugin activated and have been loaded
@@ -31,7 +33,56 @@
         function ssWp7CreateShortcode() {
             ob_start();
 
+            //-- display list of staff and managers
+            $this->ssDisplayStaffManager();
+
             return ob_get_clean();
+        }
+
+        //-- function to dislay all staff and managers
+        function ssDisplayStaffManager() {
+            $ss_current_page    = get_query_var('paged') ? (int) get_query_var('paged') : 1;
+
+            //-- all get staff and manager
+            $ss_user_args   = array(
+                'role__in'  => [ "ss_staff", "ss_manager" ],
+                'number'    => $this->ss_max_user_per_page,
+                'paged'     => $ss_current_page,
+                'orderby'   => 'display_name',
+                'order'     => 'ASC'
+            );
+
+            $ss_user_results    = new WP_User_Query( $ss_user_args );
+            $ss_user_count      = $ss_user_results->get_total();
+            $ss_max_page        = ceil( $ss_user_count/$this->ss_max_user_per_page );
+
+            // User Loop
+            if ( !empty( $ss_user_results->get_results() ) ) {
+        ?>
+
+                <!-- users container -->
+                <div class="users-container ui list">
+        <?php
+                foreach ( $ss_user_results->get_results() as $ss_user_result ) {
+                    echo '<div class="item">' . $ss_user_result->display_name . '</div>';
+                }
+        ?> 
+                </div>
+                <!-- end users container -->
+        <?php
+            } else {
+                echo 'No users found.';
+            }
+
+            //-- pagination
+            echo paginate_links( array(
+                'base' => str_replace( $ss_max_page, '%#%', esc_url( get_pagenum_link( $ss_max_page ) ) ),
+                'format' => '?paged=%#%',
+                'prev_text' => __('&laquo; Previous'),
+                'next_text' => __('Next &raquo;'), 
+                'total' => $ss_max_page, 
+                'current' => max( 1, get_query_var('paged') )
+            ));
         }
 
         //-- function to create user role
