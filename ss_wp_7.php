@@ -34,18 +34,18 @@
             ob_start();
 
             //-- display list of staff and managers
-            $this->ssDisplayStaffManager();
+            $this->ssDisplayStaffManager( [ "ss_staff", "ss_manager" ] );
 
             return ob_get_clean();
         }
 
         //-- function to dislay all staff and managers
-        function ssDisplayStaffManager() {
+        function ssDisplayStaffManager( $roles ) {
             $ss_current_page    = get_query_var('paged') ? (int) get_query_var('paged') : 1;
 
             //-- all get staff and manager
             $ss_user_args   = array(
-                'role__in'  => [ "ss_staff", "ss_manager" ],
+                'role__in'  => $roles,
                 'number'    => $this->ss_max_user_per_page,
                 'paged'     => $ss_current_page,
                 'orderby'   => 'display_name',
