@@ -17,9 +17,9 @@
 
         function __construct() {
             /**
-             * execute this when plugin activated and have been loaded
-             * 1. register shortcode
-             **/
+            * execute this when plugin activated and have been loaded
+            * 1. register shortcode
+            **/
             add_action( 'plugins_loaded', array( $this, 'ssWp7PluginsLoadedHandlers' ), 2 );
 
             //-- add new user roles
@@ -30,11 +30,19 @@
         }
 
         //-- function to create shortcode for displaying all staff and manager
-        function ssWp7CreateShortcode() {
+        function ssWp7CreateShortcode( $ss_shortcode_atts = array() ) {
             ob_start();
 
+            //-- add shortcode attribute
+            $ss_shortcode_atts = array_change_key_case( (array)$ss_shortcode_atts, CASE_LOWER );
+
+            //-- override default shortcode parameters
+            $ss_wp_7_roles_atts = shortcode_atts([
+                                        'roles_to_show' => [ "ss_staff", "ss_manager" ],
+                                    ], $ss_shortcode_atts );
+
             //-- display list of staff and managers
-            $this->ssDisplayStaffManager( [ "ss_staff", "ss_manager" ] );
+            $this->ssDisplayStaffManager( $ss_wp_7_roles_atts[ 'roles_to_show' ] );
 
             return ob_get_clean();
         }
