@@ -40,6 +40,9 @@
             $ss_wp_7_roles_atts = shortcode_atts([
                                         'roles_to_show' => [ "ss_staff", "ss_manager" ],
                                     ], $ss_shortcode_atts );
+            
+            //-- changes role to show into array variable
+            $ss_wp_7_roles_atts[ 'roles_to_show' ] = explode( ',', $ss_wp_7_roles_atts[ 'roles_to_show' ] );
 
             //-- display list of staff and managers
             $this->ssDisplayStaffManager( $ss_wp_7_roles_atts[ 'roles_to_show' ] );
