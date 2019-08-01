@@ -96,7 +96,7 @@ class SS_WP_7_Main {
 				echo '<div class="item">' . esc_html( $ss_user_result->display_name ) . '</div>';
 			}
 			?>
-		 
+
 				</div>
 				<!-- end users container -->
 			<?php
