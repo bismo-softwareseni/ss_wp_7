@@ -1,19 +1,19 @@
 <?php
-	/**
-	 * Plugin Name: SoftwareSeni WP Training 7
-	 * Description: Objectives - creating user role
-	 * Version: 1.0
-	 * Author: Bismoko Widyatno
-	 *
-	 * @package ss_wp_7
-	 */
+/**
+ * Plugin Name: SoftwareSeni WP Training 7
+ * Description: Objectives - creating user role
+ * Version: 1.0
+ * Author: Bismoko Widyatno
+ *
+ * @package ss_wp_7
+ */
 
-	/**
-	 * --------------------------------------------------------------------------
-	 * Main class for this plugin. This class will handle most of the
-	 * plugin logic
-	 * --------------------------------------------------------------------------
-	 **/
+/**
+ * --------------------------------------------------------------------------
+ * Main class for this plugin. This class will handle most of the
+ * plugin logic
+ * --------------------------------------------------------------------------
+ **/
 class SS_WP_7_Main {
 	/**
 	 * Maximum user to show per page
